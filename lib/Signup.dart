@@ -1,4 +1,9 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -8,7 +13,18 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  Widget? namechk = const Icon(Icons.check_circle_outline),
+      mailchk = const Icon(Icons.check_circle_outline),
+      nochk = const Icon(Icons.check_circle_outline);
+  final passwordcontroller = TextEditingController();
+  bool passshow = false;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    passshow = true;
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -48,46 +64,118 @@ class _SignupState extends State<Signup> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
                 child: Column(
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     const SizedBox(
                       height: 25,
                     ),
-                    const TextField(
-                      decoration: InputDecoration(hintText: "Name"),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 320,
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              hintText: "Name",
+                            ),
+                            onChanged: (val) {
+                              nameValidator(val);
+                            },
+                          ),
+                        ),
+                        Container(
+                          child: namechk,
+                        )
+                      ],
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 40,
                     ),
-                    const TextField(
-                      decoration: InputDecoration(hintText: "Email"),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 320,
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              hintText: "Email",
+                            ),
+                            onChanged: (val) {
+                              Mailvalidato(val);
+                            },
+                          ),
+                        ),
+                        Container(
+                          child: mailchk,
+                        )
+                      ],
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 40,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 320,
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              hintText: "Mobile Number",
+                            ),
+                            onChanged: (val) {
+                              MobilNoValidator(val);
+                            },
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                        Container(
+                          child: nochk,
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 40,
                     ),
                     const TextField(
                       decoration: InputDecoration(
-                          hintText: "Mobile Number", prefixText: "+91"),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                          hintText: "Organization",
+                          hintText: "Organization(optional)",
                           border: UnderlineInputBorder()),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 40,
                     ),
-                    const TextField(
-                      decoration: InputDecoration(hintText: "Password"),
-                      obscureText: true,
+                    TextField(
+                      decoration: InputDecoration(
+                          hintText: "Password",
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  passshow = !passshow;
+                                });
+                              },
+                              icon: Icon(
+                                passshow
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.grey,
+                              ))),
+                      controller: passwordcontroller,
+                      obscureText: passshow,
                     ),
                     const SizedBox(
-                      height: 25,
+                      height: 10,
+                    ),
+                    FlutterPwValidator(
+                        width: 330,
+                        numericCharCount: 1,
+                        uppercaseCharCount: 1,
+                        normalCharCount: 1,
+                        specialCharCount: 1,
+                        height: 95,
+                        minLength: 10,
+                        onSuccess: passwordvalidator,
+                        controller: passwordcontroller),
+                    const SizedBox(
+                      height: 50,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +183,7 @@ class _SignupState extends State<Signup> {
                         const Text("By signing up, I agree to"),
                         TextButton(
                             onPressed: () {},
-                            child: const Text("Terms and Condition\*")),
+                            child: const Text("Terms and Condition*")),
                       ],
                     ),
                     Container(
@@ -132,5 +220,74 @@ class _SignupState extends State<Signup> {
         ),
       ),
     );
+  }
+
+  void nameValidator(String name) {
+    if (name.isEmpty) {
+      setState(() {
+        namechk = const Icon(
+          Icons.check_circle_outline,
+          color: Colors.black,
+        );
+      });
+    } else if (name.length >= 8) {
+      setState(() {
+        namechk = const Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+        );
+      });
+    } else {
+      setState(() {
+        namechk = const Icon(
+          Icons.close,
+          color: Colors.red,
+        );
+      });
+    }
+  }
+
+  void Mailvalidato(String mail) {
+    if (mail.isEmpty) {
+      setState(() {
+        mailchk = const Icon(Icons.check_circle_outline);
+      });
+    } else if (EmailValidator.validate(mail, true)) {
+      setState(() {
+        mailchk = const Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+        );
+      });
+    } else {
+      setState(() {
+        mailchk = const Icon(
+          Icons.check_circle_outline,
+          color: Colors.red,
+        );
+      });
+    }
+  }
+
+  void MobilNoValidator(String num) {
+    if (num.length > 10 || num.length < 10) {
+      setState(() {
+        nochk = const Icon(
+          Icons.check_circle_outline,
+          color: Colors.red,
+        );
+      });
+    } else {
+      setState(() {
+        nochk = const Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+        );
+      });
+    }
+  }
+
+  void passwordvalidator() {
+    print(passwordcontroller);
   }
 }

@@ -1,5 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:login_app/Signup.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:login_app/splash.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -9,6 +14,20 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  Widget? mailchk = const Icon(
+    Icons.check_circle_outline,
+  );
+  Widget? passchk = const Icon(
+    Icons.check_circle_outline,
+  );
+  bool passvisib = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    passvisib = true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +36,7 @@ class _LoginState extends State<Login> {
           child: ListView(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 200, 10, 0),
+                padding: const EdgeInsets.fromLTRB(25, 200, 25, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -37,31 +56,73 @@ class _LoginState extends State<Login> {
                           TextStyle(fontSize: 15, fontWeight: FontWeight.w200),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 25,
                     ),
-                    const TextField(
-                        decoration: InputDecoration(
-                            hintText: "Email",
-                            focusedBorder: UnderlineInputBorder(),
-                            enabledBorder: UnderlineInputBorder())),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 315,
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              hintText: "Email",
+                              focusedBorder: UnderlineInputBorder(),
+                              enabledBorder: UnderlineInputBorder(),
+                            ),
+                            onChanged: (val) {
+                              EmailValidata(val);
+                            },
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                        ),
+                        Container(
+                          child: mailchk,
+                        ),
+                      ],
+                    ),
                     const SizedBox(
                       height: 30,
                     ),
-                    const TextField(
-                      decoration: InputDecoration(
-                          hintText: "Password",
-                          border: UnderlineInputBorder(),
-                          enabledBorder: UnderlineInputBorder(),
-                          focusedBorder: UnderlineInputBorder()),
-                      obscureText: true,
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 315,
+                          child: TextField(
+                            decoration: InputDecoration(
+                                hintText: "Password",
+                                border: UnderlineInputBorder(),
+                                enabledBorder: UnderlineInputBorder(),
+                                focusedBorder: UnderlineInputBorder(),
+                                suffixIcon: IconButton(
+                                    icon: Icon(
+                                      passvisib
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        passvisib = !passvisib;
+                                      });
+                                    })),
+                            onChanged: (val) {
+                              PasswordValidator(val);
+                            },
+                            obscureText: passvisib,
+                            keyboardType: TextInputType.visiblePassword,
+                          ),
+                        ),
+                        Container(
+                          child: passchk,
+                        ),
+                      ],
                     ),
                     const SizedBox(
-                      height: 30,
+                      height: 28,
                     ),
                     Center(
                       child: Container(
-                        height: 50,
-                        width: 150,
+                        height: 45,
+                        width: 250,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25),
                             color: Colors.blue),
@@ -70,7 +131,7 @@ class _LoginState extends State<Login> {
                           "Sign In",
                           style: TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w300,
                             color: Colors.white,
                           ),
                         )),
@@ -90,9 +151,6 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
               Container(
                 height: 50,
                 color: Colors.tealAccent,
@@ -102,7 +160,7 @@ class _LoginState extends State<Login> {
                     const Text(
                       "New to Fielda?",
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
                     ),
                     TextButton(
                         onPressed: () {
@@ -114,22 +172,76 @@ class _LoginState extends State<Login> {
                         child: const Text(
                           "Create Account",
                           style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 15),
+                              fontWeight: FontWeight.w300, fontSize: 18),
                         ))
                   ],
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 150,
               ),
-              const Center(
-                child: Text(
-                  "About Fielda",
-                  style: TextStyle(fontWeight: FontWeight.w300),
+              Center(
+                child: TextButton(
+                  child: Text(
+                    "About Fielda",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w300, color: Colors.black),
+                  ),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Splash()));
+                  },
                 ),
               )
             ],
           ),
         ));
+  }
+
+  // ignore: non_constant_identifier_names
+  void EmailValidata(String val) {
+    if (val.isEmpty) {
+      setState(() {
+        mailchk = const Icon(
+          Icons.check_circle_outline,
+        );
+      });
+    } else if (EmailValidator.validate(val, true, true)) {
+      setState(() {
+        mailchk = const Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+        );
+      });
+    } else {
+      setState(() {
+        mailchk = const Icon(
+          Icons.check_circle_outline,
+          color: Colors.red,
+        );
+      });
+    }
+  }
+
+  void PasswordValidator(String val2) {
+    if (val2.length >= 10) {
+      setState(() {
+        passchk = const Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+        );
+      });
+    } else if (val2.isEmpty) {
+      setState(() {
+        passchk = const Icon(Icons.check_circle_outline);
+      });
+    } else {
+      setState(() {
+        passchk = const Icon(
+          Icons.check_circle_outline,
+          color: Colors.red,
+        );
+      });
+    }
   }
 }

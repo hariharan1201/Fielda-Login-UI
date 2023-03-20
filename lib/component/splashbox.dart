@@ -26,6 +26,13 @@ class Splashbox extends StatelessWidget {
                 fontSize: 12,
                 fontFamily: "Tiltwrap",
                 color: Colors.lightBlueAccent),
+          ),
+          const SizedBox(
+            height: 75,
+          ),
+          const Icon(
+            Icons.arrow_forward,
+            size: 25,
           )
         ],
       ),

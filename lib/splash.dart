@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:login_app/Login.dart';
 import 'package:login_app/Signup.dart';
+import 'package:login_app/component/lastbox.dart';
 import 'package:login_app/component/splashbox.dart';
 
 class Splash extends StatefulWidget {
@@ -18,8 +19,8 @@ class _SplashState extends State<Splash> {
     super.initState();
     // ignore: todo
     // TODO: implement initState
-    Timer(const Duration(seconds: 3), () {
-      Navigator.push(
+    Timer(const Duration(seconds: 8), () {
+      Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const Login()));
     });
   }
@@ -38,24 +39,28 @@ class _SplashState extends State<Splash> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(color: Colors.blue)),
-              child: PageView(
-                children: const [
-                  Splashbox(
-                    Head: "Track your work",
-                    description:
-                        "Monitor,Track and Map field work Anywhere, Anytime",
-                  ),
-                  Splashbox(
-                      Head: "Add real-world detial",
-                      description: "No paper Trail,Stay real-time,Stay mobile"),
-                  Splashbox(
-                      Head: "Stay Connected",
-                      description: "Leverage GIS for tracking yor activity")
-                ],
+              child: Expanded(
+                child: PageView(
+                  children: const [
+                    Splashbox(
+                      Head: "Track your work",
+                      description:
+                          "Monitor,Track and Map field work Anywhere, Anytime",
+                    ),
+                    Splashbox(
+                        Head: "Add real-world detial",
+                        description:
+                            "No paper Trail,Stay real-time,Stay mobile"),
+                    Lastbox(
+                      head: "Stay Connected",
+                      subtext: "Leverage GIS for tracking your activity",
+                    )
+                  ],
+                ),
               ),
             ),
             const SizedBox(
-              height: 50,
+              height: 125,
             ),
             InkWell(
               child: Container(
@@ -79,7 +84,7 @@ class _SplashState extends State<Splash> {
               },
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             InkWell(
               child: Container(

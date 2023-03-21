@@ -14,6 +14,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool? button;
   Widget? mailchk = const Icon(
     Icons.check_circle_outline,
   );
@@ -38,6 +39,7 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(25, 200, 25, 0),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
@@ -59,6 +61,7 @@ class _LoginState extends State<Login> {
                       height: 25,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
                           width: 315,
@@ -70,6 +73,12 @@ class _LoginState extends State<Login> {
                             ),
                             onChanged: (val) {
                               EmailValidata(val);
+                              if (val.isEmpty) {
+                                setState(() {
+                                  button = false;
+                                });
+                              }
+                              ;
                             },
                             keyboardType: TextInputType.emailAddress,
                           ),
@@ -83,6 +92,7 @@ class _LoginState extends State<Login> {
                       height: 30,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
                           width: 315,
@@ -120,21 +130,24 @@ class _LoginState extends State<Login> {
                       height: 28,
                     ),
                     Center(
-                      child: Container(
-                        height: 45,
-                        width: 250,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: Colors.blue),
-                        child: const Center(
-                            child: Text(
-                          "Sign In",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white,
-                          ),
-                        )),
+                      child: ElevatedButton(
+                        child: Container(
+                          height: 45,
+                          width: 250,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.blue),
+                          child: const Center(
+                              child: Text(
+                            "Sign In",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.white,
+                            ),
+                          )),
+                        ),
+                        onPressed: () {},
                       ),
                     ),
                     Center(

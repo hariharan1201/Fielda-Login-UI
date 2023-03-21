@@ -1,9 +1,8 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, avoid_unnecessary_containers
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -13,16 +12,51 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  WebViewController weeb = WebViewController();
   Widget? namechk = const Icon(Icons.check_circle_outline),
       mailchk = const Icon(Icons.check_circle_outline),
       nochk = const Icon(Icons.check_circle_outline);
-  final passwordcontroller = TextEditingController();
   bool passshow = false;
+  Widget upperA = const Text(
+    "A",
+    style: TextStyle(fontSize: 35, color: Colors.grey),
+  );
+  Widget LowerA = const Text(
+    "a",
+    style: TextStyle(fontSize: 35, color: Colors.grey),
+  );
+  Widget Numeric = const Text(
+    "1",
+    style: TextStyle(fontSize: 35, color: Colors.grey),
+  );
+  Widget len = const Text(
+    "8+",
+    style: TextStyle(fontSize: 35, color: Colors.grey),
+  );
+  Widget Uppercase = const Text(
+        "Uppercase",
+        style: TextStyle(color: Colors.grey),
+      ),
+      LowerCase = const Text(
+        "Lowercase",
+        style: TextStyle(color: Colors.grey),
+      ),
+      Number = const Text(
+        "Number",
+        style: TextStyle(color: Colors.grey),
+      ),
+      Length = const Text(
+        "Characters",
+        style: TextStyle(color: Colors.grey),
+      );
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     passshow = true;
+    weeb = WebViewController()
+      ..loadRequest(Uri.parse('https://www.twitter.com/'));
   }
 
   Widget build(BuildContext context) {
@@ -158,37 +192,101 @@ class _SignupState extends State<Signup> {
                                     : Icons.visibility,
                                 color: Colors.grey,
                               ))),
-                      controller: passwordcontroller,
                       obscureText: passshow,
+                      onChanged: (val) {
+                        upperValidation(val);
+                        lowervalidation(val);
+                        Numericvalidation(val);
+                        length(val);
+                      },
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    FlutterPwValidator(
-                        width: 330,
-                        numericCharCount: 1,
-                        uppercaseCharCount: 1,
-                        normalCharCount: 1,
-                        specialCharCount: 1,
-                        height: 95,
-                        minLength: 10,
-                        onSuccess: passwordvalidator,
-                        controller: passwordcontroller),
+                    Container(
+                      height: 70,
+                      width: 320,
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  upperA,
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Uppercase
+                                ]),
+                          ),
+                          Container(
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  LowerA,
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  LowerCase
+                                ]),
+                          ),
+                          Container(
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Numeric,
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Number
+                                ]),
+                          ),
+                          Container(
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  len,
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Length
+                                ]),
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(
                       height: 50,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("By signing up, I agree to"),
+                        const Text(
+                          "By signing up, I agree to",
+                          style: TextStyle(fontSize: 15),
+                        ),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      scrollable: true,
+                                      content: SizedBox(
+                                        height: 600,
+                                        child: WebViewWidget(controller: weeb),
+                                      ),
+                                    );
+                                  });
+                            },
                             child: const Text("Terms and Condition*")),
                       ],
                     ),
                     Container(
                       height: 50,
-                      width: 200,
+                      width: 300,
                       decoration: BoxDecoration(
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(25)),
@@ -204,12 +302,18 @@ class _SignupState extends State<Signup> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Already have an account?"),
+                        const Text(
+                          "Already have an account?",
+                          style: TextStyle(fontSize: 18),
+                        ),
                         TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: const Text("Sign In"))
+                            child: const Text(
+                              "Sign In",
+                              style: TextStyle(fontSize: 18),
+                            ))
                       ],
                     )
                   ],
@@ -240,7 +344,7 @@ class _SignupState extends State<Signup> {
     } else {
       setState(() {
         namechk = const Icon(
-          Icons.close,
+          Icons.check_circle_outline,
           color: Colors.red,
         );
       });
@@ -287,7 +391,154 @@ class _SignupState extends State<Signup> {
     }
   }
 
-  void passwordvalidator() {
-    print(passwordcontroller);
+  void upperValidation(String val) {
+    RegExp Valid = RegExp(r'^(?=.*[A-Z]).{1,}$');
+    if (Valid.hasMatch(val)) {
+      setState(() {
+        upperA = const Text(
+          "A",
+          style: TextStyle(color: Colors.green, fontSize: 35),
+        );
+        Uppercase = const Text(
+          "Uppercase",
+          style: TextStyle(color: Colors.green),
+        );
+      });
+    } else if (val.isEmpty) {
+      setState(() {
+        upperA = const Text(
+          "A",
+          style: TextStyle(fontSize: 35, color: Colors.grey),
+        );
+        Uppercase = const Text(
+          "Uppercase",
+          style: TextStyle(color: Colors.grey),
+        );
+      });
+    } else {
+      setState(() {
+        upperA = const Text(
+          "A",
+          style: TextStyle(color: Colors.red, fontSize: 35),
+        );
+        Uppercase = const Text(
+          "Uppercase",
+          style: TextStyle(color: Colors.red),
+        );
+      });
+    }
+  }
+
+  void lowervalidation(String val) {
+    RegExp Valid = RegExp(r'^(?=.*[a-z]).{1,}$');
+    if (Valid.hasMatch(val)) {
+      setState(() {
+        LowerA = const Text(
+          "a",
+          style: TextStyle(fontSize: 35, color: Colors.green),
+        );
+        LowerCase = LowerCase = const Text(
+          "lowercase",
+          style: TextStyle(color: Colors.green),
+        );
+      });
+    } else if (val.isEmpty) {
+      setState(() {
+        LowerA = const Text(
+          "a",
+          style: TextStyle(fontSize: 35, color: Colors.grey),
+        );
+        LowerCase = LowerCase = const Text(
+          "lowercase",
+          style: TextStyle(color: Colors.grey),
+        );
+      });
+    } else {
+      setState(() {
+        LowerA = const Text(
+          "a",
+          style: TextStyle(fontSize: 35, color: Colors.red),
+        );
+        LowerCase = LowerCase = const Text(
+          "lowercase",
+          style: TextStyle(color: Colors.red),
+        );
+      });
+    }
+  }
+
+  void Numericvalidation(String val) {
+    RegExp Valid = RegExp(r'^(?=.*[0-9]).{1,}$');
+    if (Valid.hasMatch(val)) {
+      setState(() {
+        Numeric = const Text(
+          "1",
+          style: TextStyle(fontSize: 35, color: Colors.green),
+        );
+        Number = const Text(
+          "Characters",
+          style: TextStyle(color: Colors.green),
+        );
+      });
+    } else if (val.isEmpty) {
+      setState(() {
+        Numeric = const Text(
+          "1",
+          style: TextStyle(fontSize: 35, color: Colors.grey),
+        );
+        Number = const Text(
+          "Characters",
+          style: TextStyle(color: Colors.grey),
+        );
+      });
+    } else {
+      setState(() {
+        Numeric = const Text(
+          "1",
+          style: TextStyle(fontSize: 35, color: Colors.red),
+        );
+        Number = const Text(
+          "Characters",
+          style: TextStyle(color: Colors.red),
+        );
+      });
+    }
+  }
+
+  void length(String val) {
+    if (val.length < 8 && val.length != 0) {
+      setState(() {
+        len = const Text(
+          "8+",
+          style: TextStyle(fontSize: 35, color: Colors.red),
+        );
+        Length = const Text(
+          "Characters",
+          style: TextStyle(color: Colors.red),
+        );
+      });
+    } else if (val.isEmpty) {
+      setState(() {
+        len = const Text(
+          "8+",
+          style: TextStyle(fontSize: 35, color: Colors.grey),
+        );
+        Length = const Text(
+          "Characters",
+          style: TextStyle(color: Colors.grey),
+        );
+      });
+    } else {
+      setState(() {
+        len = const Text(
+          "8+",
+          style: TextStyle(fontSize: 35, color: Colors.green),
+        );
+        Length = const Text(
+          "Characters",
+          style: TextStyle(color: Colors.green),
+        );
+      });
+    }
   }
 }

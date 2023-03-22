@@ -5,6 +5,7 @@ import 'package:login_app/Login.dart';
 import 'package:login_app/Signup.dart';
 import 'package:login_app/component/lastbox.dart';
 import 'package:login_app/component/splashbox.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -14,6 +15,7 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  PageController pagecontrl = PageController();
   @override
   void initState() {
     super.initState();
@@ -25,6 +27,7 @@ class _SplashState extends State<Splash> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -41,6 +44,7 @@ class _SplashState extends State<Splash> {
                   border: Border.all(color: Colors.blue)),
               child: Expanded(
                 child: PageView(
+                  controller: pagecontrl,
                   children: const [
                     Splashbox(
                       Head: "Track your work",
@@ -58,6 +62,21 @@ class _SplashState extends State<Splash> {
                   ],
                 ),
               ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            SmoothPageIndicator(
+              controller: pagecontrl,
+              count: 3,
+              effect: const SlideEffect(
+                  spacing: 5.0,
+                  radius: 10.0,
+                  dotWidth: 10.0,
+                  dotHeight: 10.0,
+                  paintStyle: PaintingStyle.fill,
+                  strokeWidth: 1.5,
+                  activeDotColor: Colors.blue),
             ),
             const SizedBox(
               height: 125,

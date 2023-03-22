@@ -14,7 +14,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool? button;
+  final mail = TextEditingController();
+  final password = TextEditingController();
+  bool button = false;
   Widget? mailchk = const Icon(
     Icons.check_circle_outline,
   );
@@ -27,6 +29,7 @@ class _LoginState extends State<Login> {
     // TODO: implement initState
     super.initState();
     passvisib = true;
+    button = false;
   }
 
   @override
@@ -66,6 +69,7 @@ class _LoginState extends State<Login> {
                         SizedBox(
                           width: 315,
                           child: TextField(
+                            controller: mail,
                             decoration: const InputDecoration(
                               hintText: "Email",
                               focusedBorder: UnderlineInputBorder(),
@@ -73,12 +77,7 @@ class _LoginState extends State<Login> {
                             ),
                             onChanged: (val) {
                               EmailValidata(val);
-                              if (val.isEmpty) {
-                                setState(() {
-                                  button = false;
-                                });
-                              }
-                              ;
+                              buttionaction(Null);
                             },
                             keyboardType: TextInputType.emailAddress,
                           ),
@@ -97,6 +96,7 @@ class _LoginState extends State<Login> {
                         SizedBox(
                           width: 315,
                           child: TextField(
+                            controller: password,
                             decoration: InputDecoration(
                                 hintText: "Password",
                                 border: UnderlineInputBorder(),
@@ -116,6 +116,7 @@ class _LoginState extends State<Login> {
                                     })),
                             onChanged: (val) {
                               PasswordValidator(val);
+                              buttionaction(Null);
                             },
                             obscureText: passvisib,
                             keyboardType: TextInputType.visiblePassword,
@@ -129,26 +130,18 @@ class _LoginState extends State<Login> {
                     const SizedBox(
                       height: 28,
                     ),
-                    Center(
-                      child: ElevatedButton(
-                        child: Container(
-                          height: 45,
-                          width: 250,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.blue),
-                          child: const Center(
-                              child: Text(
-                            "Sign In",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white,
-                            ),
-                          )),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(shape: StadiumBorder()),
+                      onPressed: button ? () {} : null,
+                      child: Center(
+                          child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.white,
                         ),
-                        onPressed: () {},
-                      ),
+                      )),
                     ),
                     Center(
                       child: TextButton(
@@ -209,6 +202,18 @@ class _LoginState extends State<Login> {
             ],
           ),
         ));
+  }
+
+  void buttionaction(Null) {
+    if (mail.text.isEmpty || password.text.length < 10) {
+      setState(() {
+        button = false;
+      });
+    } else {
+      setState(() {
+        button = true;
+      });
+    }
   }
 
   // ignore: non_constant_identifier_names

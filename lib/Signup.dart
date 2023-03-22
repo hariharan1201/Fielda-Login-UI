@@ -12,6 +12,11 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  final name = TextEditingController();
+  final mail = TextEditingController();
+  final mobile = TextEditingController();
+  final password = TextEditingController();
+  bool button = false;
   WebViewController weeb = WebViewController();
   Widget? namechk = const Icon(Icons.check_circle_outline),
       mailchk = const Icon(Icons.check_circle_outline),
@@ -57,6 +62,7 @@ class _SignupState extends State<Signup> {
     passshow = true;
     weeb = WebViewController()
       ..loadRequest(Uri.parse('https://www.twitter.com/'));
+    button = false;
   }
 
   Widget build(BuildContext context) {
@@ -110,11 +116,13 @@ class _SignupState extends State<Signup> {
                         SizedBox(
                           width: 320,
                           child: TextField(
+                            controller: name,
                             decoration: const InputDecoration(
                               hintText: "Name",
                             ),
                             onChanged: (val) {
                               nameValidator(val);
+                              buttonaction(Null);
                             },
                           ),
                         ),
@@ -131,11 +139,13 @@ class _SignupState extends State<Signup> {
                         SizedBox(
                           width: 320,
                           child: TextField(
+                            controller: mail,
                             decoration: const InputDecoration(
                               hintText: "Email",
                             ),
                             onChanged: (val) {
                               Mailvalidato(val);
+                              buttonaction(Null);
                             },
                           ),
                         ),
@@ -152,11 +162,13 @@ class _SignupState extends State<Signup> {
                         SizedBox(
                           width: 320,
                           child: TextField(
+                            controller: mobile,
                             decoration: const InputDecoration(
                               hintText: "Mobile Number",
                             ),
                             onChanged: (val) {
                               MobilNoValidator(val);
+                              buttonaction(Null);
                             },
                             keyboardType: TextInputType.number,
                           ),
@@ -178,6 +190,7 @@ class _SignupState extends State<Signup> {
                       height: 40,
                     ),
                     TextField(
+                      controller: password,
                       decoration: InputDecoration(
                           hintText: "Password",
                           suffixIcon: IconButton(
@@ -198,6 +211,7 @@ class _SignupState extends State<Signup> {
                         lowervalidation(val);
                         Numericvalidation(val);
                         length(val);
+                        buttonaction(Null);
                       },
                     ),
                     const SizedBox(
@@ -284,20 +298,21 @@ class _SignupState extends State<Signup> {
                             child: const Text("Terms and Condition*")),
                       ],
                     ),
-                    Container(
+                    SizedBox(
                       height: 50,
-                      width: 300,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(25)),
-                      child: const Center(
-                          child: Text(
-                        "Send verification Code",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w300),
-                      )),
+                      width: 400,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: const StadiumBorder()),
+                        onPressed: button ? () {} : null,
+                        child: const Text(
+                          "Send verification Code",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -324,6 +339,21 @@ class _SignupState extends State<Signup> {
         ),
       ),
     );
+  }
+
+  void buttonaction(Null) {
+    if (name.text.isEmpty ||
+        mail.text.isEmpty ||
+        mobile.text.isEmpty ||
+        password.text.length < 10) {
+      setState(() {
+        button = false;
+      });
+    } else {
+      setState(() {
+        button = true;
+      });
+    }
   }
 
   void nameValidator(String name) {
@@ -476,7 +506,7 @@ class _SignupState extends State<Signup> {
           style: TextStyle(fontSize: 35, color: Colors.green),
         );
         Number = const Text(
-          "Characters",
+          "Number",
           style: TextStyle(color: Colors.green),
         );
       });
@@ -487,7 +517,7 @@ class _SignupState extends State<Signup> {
           style: TextStyle(fontSize: 35, color: Colors.grey),
         );
         Number = const Text(
-          "Characters",
+          "Number",
           style: TextStyle(color: Colors.grey),
         );
       });
@@ -498,7 +528,7 @@ class _SignupState extends State<Signup> {
           style: TextStyle(fontSize: 35, color: Colors.red),
         );
         Number = const Text(
-          "Characters",
+          "Number",
           style: TextStyle(color: Colors.red),
         );
       });

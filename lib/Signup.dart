@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, avoid_unnecessary_containers
-
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:login_app/Verification.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Signup extends StatefulWidget {
@@ -18,25 +18,23 @@ class _SignupState extends State<Signup> {
   final password = TextEditingController();
   bool button = false;
   WebViewController weeb = WebViewController();
-  Widget? namechk = const Icon(Icons.check_circle_outline),
-      mailchk = const Icon(Icons.check_circle_outline),
-      nochk = const Icon(Icons.check_circle_outline);
+  Widget? namechk, mailchk, nochk;
   bool passshow = false;
   Widget upperA = const Text(
     "A",
-    style: TextStyle(fontSize: 35, color: Colors.grey),
+    style: TextStyle(fontSize: 25, color: Colors.grey),
   );
   Widget LowerA = const Text(
     "a",
-    style: TextStyle(fontSize: 35, color: Colors.grey),
+    style: TextStyle(fontSize: 25, color: Colors.grey),
   );
   Widget Numeric = const Text(
     "1",
-    style: TextStyle(fontSize: 35, color: Colors.grey),
+    style: TextStyle(fontSize: 25, color: Colors.grey),
   );
   Widget len = const Text(
     "8+",
-    style: TextStyle(fontSize: 35, color: Colors.grey),
+    style: TextStyle(fontSize: 25, color: Colors.grey),
   );
   Widget Uppercase = const Text(
         "Uppercase",
@@ -61,7 +59,7 @@ class _SignupState extends State<Signup> {
     super.initState();
     passshow = true;
     weeb = WebViewController()
-      ..loadRequest(Uri.parse('https://www.twitter.com/'));
+      ..loadRequest(Uri.parse('https://fielda.com/terms-of-service/'));
     button = false;
   }
 
@@ -71,270 +69,285 @@ class _SignupState extends State<Signup> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ListView(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // ignore: sized_box_for_whitespace
-                  InkWell(
-                    // ignore: sized_box_for_whitespace
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      child: const Icon(
-                        Icons.arrow_back_sharp,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  const SizedBox(
-                    width: 40,
-                  ),
-                  const Text(
-                    "Let's get Started",
-                    style: TextStyle(
-                        fontSize: 35,
-                        fontFamily: "Tiltwrap",
-                        color: Colors.blueGrey),
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                child: Column(
-                  // ignore: prefer_const_literals_to_create_immutables
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 320,
-                          child: TextField(
-                            controller: name,
-                            decoration: const InputDecoration(
-                              hintText: "Name",
-                            ),
-                            onChanged: (val) {
-                              nameValidator(val);
-                              buttonaction(Null);
-                            },
-                          ),
+                    // ignore: sized_box_for_whitespace
+                    InkWell(
+                      // ignore: sized_box_for_whitespace
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        child: const Icon(
+                          Icons.arrow_back_sharp,
+                          color: Colors.blue,
                         ),
-                        Container(
-                          child: namechk,
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 320,
-                          child: TextField(
-                            controller: mail,
-                            decoration: const InputDecoration(
-                              hintText: "Email",
-                            ),
-                            onChanged: (val) {
-                              Mailvalidato(val);
-                              buttonaction(Null);
-                            },
-                          ),
-                        ),
-                        Container(
-                          child: mailchk,
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 320,
-                          child: TextField(
-                            controller: mobile,
-                            decoration: const InputDecoration(
-                              hintText: "Mobile Number",
-                            ),
-                            onChanged: (val) {
-                              MobilNoValidator(val);
-                              buttonaction(Null);
-                            },
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
-                        Container(
-                          child: nochk,
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                          hintText: "Organization(optional)",
-                          border: UnderlineInputBorder()),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    TextField(
-                      controller: password,
-                      decoration: InputDecoration(
-                          hintText: "Password",
-                          suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  passshow = !passshow;
-                                });
-                              },
-                              icon: Icon(
-                                passshow
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: Colors.grey,
-                              ))),
-                      obscureText: passshow,
-                      onChanged: (val) {
-                        upperValidation(val);
-                        lowervalidation(val);
-                        Numericvalidation(val);
-                        length(val);
-                        buttonaction(Null);
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
                       },
                     ),
                     const SizedBox(
-                      height: 10,
+                      width: 40,
                     ),
-                    Container(
-                      height: 70,
-                      width: 320,
-                      color: Colors.transparent,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  upperA,
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Uppercase
-                                ]),
-                          ),
-                          Container(
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  LowerA,
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  LowerCase
-                                ]),
-                          ),
-                          Container(
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Numeric,
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Number
-                                ]),
-                          ),
-                          Container(
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  len,
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Length
-                                ]),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "By signing up, I agree to",
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      scrollable: true,
-                                      content: SizedBox(
-                                        height: 600,
-                                        child: WebViewWidget(controller: weeb),
-                                      ),
-                                    );
-                                  });
-                            },
-                            child: const Text("Terms and Condition*")),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 50,
-                      width: 400,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: const StadiumBorder()),
-                        onPressed: button ? () {} : null,
-                        child: const Text(
-                          "Send verification Code",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w300),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Already have an account?",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              "Sign In",
-                              style: TextStyle(fontSize: 18),
-                            ))
-                      ],
+                    const Text(
+                      "Let's get Started",
+                      style: TextStyle(
+                          fontSize: 32,
+                          color: Colors.blueGrey,
+                          fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  child: Column(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 320,
+                            child: TextField(
+                              controller: name,
+                              decoration: const InputDecoration(
+                                hintText: "Name",
+                              ),
+                              onChanged: (val) {
+                                nameValidator(val);
+                                buttonaction(Null);
+                              },
+                            ),
+                          ),
+                          Container(
+                            child: namechk,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 320,
+                            child: TextField(
+                              controller: mail,
+                              decoration: const InputDecoration(
+                                hintText: "Email",
+                              ),
+                              onChanged: (val) {
+                                Mailvalidato(val);
+                                buttonaction(Null);
+                              },
+                            ),
+                          ),
+                          Container(
+                            child: mailchk,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 320,
+                            child: TextField(
+                              controller: mobile,
+                              decoration: const InputDecoration(
+                                hintText: "Mobile Number",
+                              ),
+                              onChanged: (val) {
+                                MobilNoValidator(val);
+                                buttonaction(Null);
+                              },
+                              keyboardType: TextInputType.number,
+                            ),
+                          ),
+                          Container(
+                            child: nochk,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      const TextField(
+                        decoration: InputDecoration(
+                            hintText: "Organization(optional)",
+                            border: UnderlineInputBorder()),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      TextField(
+                        controller: password,
+                        decoration: InputDecoration(
+                            hintText: "Password",
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    passshow = !passshow;
+                                  });
+                                },
+                                icon: Icon(
+                                  passshow
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: Colors.grey,
+                                ))),
+                        obscureText: passshow,
+                        onChanged: (val) {
+                          upperValidation(val);
+                          lowervalidation(val);
+                          Numericvalidation(val);
+                          length(val);
+                          buttonaction(Null);
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 70,
+                        width: 320,
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    upperA,
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Uppercase
+                                  ]),
+                            ),
+                            Container(
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    LowerA,
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    LowerCase
+                                  ]),
+                            ),
+                            Container(
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Numeric,
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Number
+                                  ]),
+                            ),
+                            Container(
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    len,
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Length
+                                  ]),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 58,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "By signing up, I agree to",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        scrollable: false,
+                                        content: SizedBox(
+                                          width: 500,
+                                          height: 750,
+                                          child:
+                                              WebViewWidget(controller: weeb),
+                                        ),
+                                      );
+                                    });
+                              },
+                              child: const Text(
+                                "Terms and Condition*",
+                                style: TextStyle(fontSize: 15),
+                              )),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 45,
+                        width: 400,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder()),
+                          onPressed: button
+                              ? () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const VerificationPage()));
+                                }
+                              : null,
+                          child: const Text(
+                            "Send verification Code",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Already have an account?",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                "Sign In",
+                                style: TextStyle(fontSize: 15),
+                              ))
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -359,10 +372,7 @@ class _SignupState extends State<Signup> {
   void nameValidator(String name) {
     if (name.isEmpty) {
       setState(() {
-        namechk = const Icon(
-          Icons.check_circle_outline,
-          color: Colors.black,
-        );
+        namechk = null;
       });
     } else if (name.length >= 8) {
       setState(() {
@@ -384,7 +394,7 @@ class _SignupState extends State<Signup> {
   void Mailvalidato(String mail) {
     if (mail.isEmpty) {
       setState(() {
-        mailchk = const Icon(Icons.check_circle_outline);
+        mailchk = null;
       });
     } else if (EmailValidator.validate(mail, true)) {
       setState(() {
@@ -411,6 +421,10 @@ class _SignupState extends State<Signup> {
           color: Colors.red,
         );
       });
+    } else if (num.isEmpty) {
+      setState(() {
+        nochk = null;
+      });
     } else {
       setState(() {
         nochk = const Icon(
@@ -427,7 +441,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         upperA = const Text(
           "A",
-          style: TextStyle(color: Colors.green, fontSize: 35),
+          style: TextStyle(color: Colors.green, fontSize: 25),
         );
         Uppercase = const Text(
           "Uppercase",
@@ -438,7 +452,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         upperA = const Text(
           "A",
-          style: TextStyle(fontSize: 35, color: Colors.grey),
+          style: TextStyle(fontSize: 25, color: Colors.grey),
         );
         Uppercase = const Text(
           "Uppercase",
@@ -449,7 +463,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         upperA = const Text(
           "A",
-          style: TextStyle(color: Colors.red, fontSize: 35),
+          style: TextStyle(color: Colors.red, fontSize: 25),
         );
         Uppercase = const Text(
           "Uppercase",
@@ -465,7 +479,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         LowerA = const Text(
           "a",
-          style: TextStyle(fontSize: 35, color: Colors.green),
+          style: TextStyle(fontSize: 25, color: Colors.green),
         );
         LowerCase = LowerCase = const Text(
           "lowercase",
@@ -476,7 +490,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         LowerA = const Text(
           "a",
-          style: TextStyle(fontSize: 35, color: Colors.grey),
+          style: TextStyle(fontSize: 25, color: Colors.grey),
         );
         LowerCase = LowerCase = const Text(
           "lowercase",
@@ -487,7 +501,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         LowerA = const Text(
           "a",
-          style: TextStyle(fontSize: 35, color: Colors.red),
+          style: TextStyle(fontSize: 25, color: Colors.red),
         );
         LowerCase = LowerCase = const Text(
           "lowercase",
@@ -503,7 +517,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         Numeric = const Text(
           "1",
-          style: TextStyle(fontSize: 35, color: Colors.green),
+          style: TextStyle(fontSize: 25, color: Colors.green),
         );
         Number = const Text(
           "Number",
@@ -514,7 +528,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         Numeric = const Text(
           "1",
-          style: TextStyle(fontSize: 35, color: Colors.grey),
+          style: TextStyle(fontSize: 25, color: Colors.grey),
         );
         Number = const Text(
           "Number",
@@ -525,7 +539,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         Numeric = const Text(
           "1",
-          style: TextStyle(fontSize: 35, color: Colors.red),
+          style: TextStyle(fontSize: 25, color: Colors.red),
         );
         Number = const Text(
           "Number",
@@ -540,7 +554,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         len = const Text(
           "8+",
-          style: TextStyle(fontSize: 35, color: Colors.red),
+          style: TextStyle(fontSize: 25, color: Colors.red),
         );
         Length = const Text(
           "Characters",
@@ -551,7 +565,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         len = const Text(
           "8+",
-          style: TextStyle(fontSize: 35, color: Colors.grey),
+          style: TextStyle(fontSize: 25, color: Colors.grey),
         );
         Length = const Text(
           "Characters",
@@ -562,7 +576,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         len = const Text(
           "8+",
-          style: TextStyle(fontSize: 35, color: Colors.green),
+          style: TextStyle(fontSize: 25, color: Colors.green),
         );
         Length = const Text(
           "Characters",

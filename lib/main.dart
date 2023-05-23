@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:login_app/Login.dart';
-import 'package:login_app/Signup.dart';
-import 'package:login_app/splash.dart';
-import 'package:login_app/testpages/web.dart';
-
-import 'testpages/check.dart';
-
+import 'package:login_app/Actuall_splash.dart';
 void main() {
-  runApp(const MaterialApp(
-    home: Splash(),
+  runApp(MaterialApp(
+    home:const ActualSplash(),
+    
     debugShowCheckedModeBanner: false,
+    theme: ThemeData(fontFamily:'groy',useMaterial3: true),
   ));
 }
